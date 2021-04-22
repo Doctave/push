@@ -4,9 +4,9 @@ set -eo pipefail
 
 VERSION="0.1.0"
 if [[ -z "${DOCTAVE_HOST}" ]]; then
-    _DOCTAVE_HOST="$DOCTAVE_HOST"
-else
     _DOCTAVE_HOST="https://docs.doctave.com"
+else
+    _DOCTAVE_HOST="$DOCTAVE_HOST"
 fi
 
 HELP_TEXT="Doctave Push $VERSION
