@@ -138,15 +138,15 @@ validate_dir
 detect_dependencies
 detect_git_info
 
-zip -r $ZIPPED "$DOCS_PATH/doctave.yaml" "$DOCS_PATH/docs"
+zip -q -r $ZIPPED "$DOCS_PATH/doctave.yaml" "$DOCS_PATH/docs"
 
-resp="$(curl -w "|%{http_code}" -H "Authorization: Bearer $UPLOAD_TOKEN" -F "git_sha=$GIT_SHA" -F "git_branch=$GIT_BRANCH" -F "git_author=$GIT_AUTHOR" -F docs="@$ZIPPED" "$_DOCTAVE_HOST"/uploads)"
+resp="$(curl --silent --show-error -w "|%{http_code}" -H "Authorization: Bearer $UPLOAD_TOKEN" -F "git_sha=$GIT_SHA" -F "git_branch=$GIT_BRANCH" -F "git_author=$GIT_AUTHOR" -F docs="@$ZIPPED" "$_DOCTAVE_HOST"/uploads)"
 
 body="$( echo "$resp" | cut -d '|' -f 1 )"
 http_code="$( echo "$resp" | cut -d '|' -f 2 )"
 
 if [[ $http_code == "201" ]]; then
-    echo "Done!"
+    echo "Done! Docs uploaded to https://docs.doctave.com"
     exit 0
 else
     print_upload_error "$body"
